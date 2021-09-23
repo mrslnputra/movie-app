@@ -12,8 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Movie.hasMany(models.Ticket)
-      Movie.hasMany(models.User)
-
+      
     }
   };
   Movie.init({

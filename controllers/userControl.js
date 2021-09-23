@@ -62,7 +62,6 @@ class ControllerUser {
 
   static myMovieList(req,res){
     let id = req.session.user.id
-    console.log(id);
     Ticket.findAll({
       where:{
         UserId : id
@@ -70,7 +69,8 @@ class ControllerUser {
       include: Movie
     })
     .then(data=>{
-      console.log(data[0].Movie.title);
+      // console.log(data);
+      console.log(data[0].Movie);
     })
   }
 
