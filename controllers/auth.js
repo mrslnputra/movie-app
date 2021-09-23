@@ -13,8 +13,7 @@ class AuthController{
       if(user){
         const isValidPass =  bcrypt.compareSync(password, user.password)
         if(isValidPass){
-          console.log(req.session);
-          
+          req.session.userId = user.id
           return res.redirect('/movieList');
         }else{
           const err = "invalid username/password"
