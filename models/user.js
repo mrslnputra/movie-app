@@ -15,6 +15,9 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       User.hasMany(models.Ticket)
       User.hasOne(models.Profile)
+      User.belongsToMany(models.Movie, {
+        through: "Ticket"
+      })
     }
   };
   User.init({
@@ -22,11 +25,12 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING,
     role: DataTypes.STRING
   }, {
-    hooks:{
-      beforeCreate:(instance,options)=>{
+    hooks: {
+      beforeCreate: (instance, options) => {
         instance.role = 'user'
         const salt = bcrypt.genSaltSync(8)
-        const hash = bcrypt.has(instance.password, salt)
+        const hash = bcrypt.hashSync(instance.password, salt)
+        console.log(hash);
         instance.password = hash
       }
     },

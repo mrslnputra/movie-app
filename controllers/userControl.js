@@ -8,7 +8,6 @@ class ControllerUser {
 
   static createProfile(req, res) {
     let { fullName, email, userName, password } = req.body
-    let id
     User.create({
       userName: userName,
       password: password
@@ -26,17 +25,20 @@ class ControllerUser {
               UserId: data[0].id
             });
           })
+        res.redirect('/login')
       })
       .catch(err => {
+        console.log(err);
         res.send(err)
       })
   }
 
 
   static findAllMovie(req, res) {
+    console.log(req.session.user);
     Movie.findAll()
       .then(data => {
-        res.render('home', { data })
+        res.render('home', { data} )
       })
   }
 
@@ -45,33 +47,33 @@ class ControllerUser {
     res.render('buyTicket', { id })
   }
 
-  static ticketCreate(req,res){
-    console.log(req.body);
-    
-    console.log(req.session.user);
-    console.log((req.params.movieId));
+  static ticketCreate(req, res) {
     Ticket.create({
       seatNumber: req.body.seatNumber,
       MovieId: +req.params.movieId,
       UserId: req.session.user.id
     })
-    .then(data=>{
-      res.redirect('/movieList')
-    })
+      .then(data => {
+        res.redirect('/movieList')
+      })
   }
 
-  static myMovieList(req,res){
-    let id = req.session.user.id
+  static myMovieList(req, res) {
+    let id = +req.session.user.id
     Ticket.findAll({
-      where:{
-        UserId : id
+      where: {
+        UserId: id
       },
-      include: Movie
+      include: {
+        model: Movie
+      }
     })
-    .then(data=>{
-      // console.log(data);
-      console.log(data[0].Movie);
-    })
+      .then(data => {
+        res.render('myMovie', {data})
+      })
+      .catch(err => {
+        res.send(err)
+      })
   }
 
 

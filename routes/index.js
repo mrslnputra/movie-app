@@ -38,14 +38,14 @@ router.get('/movieList/myPurchase', ControllerUser.myMovieList)
 
 
 
-// router.use(function (req, res, next) {
-//   if (req.session.user.role !== 'admin') {
-//     const err = 'balik sana!'
-//     res.redirect('/login')
-//   }else{
-//     next()
-//   }
-// })
+router.use(function (req, res, next) {
+  if (req.session.user.role !== 'admin') {
+    const err = 'balik sana!'
+    res.redirect('/login')
+  }else{
+    next()
+  }
+})
 // isAdmin
 router.get('/addMovie', ControllerAdmin.addMovieForm)
 router.post('/addMovie', ControllerAdmin.createMovie)
