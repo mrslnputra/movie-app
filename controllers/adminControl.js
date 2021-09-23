@@ -15,7 +15,15 @@ class ControllerAdmin {
       genre: genre
     })
       .then(data => {
-        console.log(data);
+        res.redirect('/home')
+      })
+      .catch(err => {
+        if(err.name==='SequelizeValidationError'){
+          let errMessage = err.errors.map(error=>error.message)
+          res.send(errMessage)
+        }else{
+          res.send(err)
+        }
       })
   }
 
@@ -47,13 +55,17 @@ class ControllerAdmin {
       }
     })
     .then(data=>{
-      res.send(data)
+      res.redirect('/home')
     })
-
+    .catch(err => {
+      if(err.name==='SequelizeValidationError'){
+        let errMessage = err.errors.map(error=>error.message)
+        res.send(errMessage)
+      }else{
+        res.send(err)
+      }
+    })
   }
-
-
-
 }
 
 

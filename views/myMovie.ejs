@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Movie App</title>
+  <title>My Movie</title>
   <style>
     * {
       margin: 0px;
@@ -79,34 +79,17 @@
       height: 60%;
       object-fit: contain;
     }
-
-    .logout{
-      background-color: rgb(243, 56, 56);
-    }
   </style>
-
+  
 </head>
 
 <body>
   <div class="header">
     <h1>Now Showing</h1>
-
-
-
     <div style="display: flex;">
-
-      <button class="add-btn"><a style="color: #fff;text-decoration: none;" href="/addMovie">Add Movie</a></button>
-      <button class="add-btn"><a style="color: #fff;text-decoration: none;" href="/my-purchase">My Movie</a></button>
-      <button class="add-btn logout"><a style="color: #fff;text-decoration: none;" href="/logout">Logout</a></button>
+      <button class="add-btn"><a style="color: #fff;text-decoration: none;" href="/home">Home</a></button>
     </div>
   </div>
-  <center>
-    <form action="/home?search=" method="GET">
-      <input type="text" size="50" name="search">
-      <button type="submit">Search</button>
-    </form>
-  </center>
-
   <div class="content-container">
     <% data.forEach(el=> { %>
       <div class="card">
@@ -122,14 +105,8 @@
           </h4>
           <div style=" text-align: center;">
             <button class="delete-btn"><a style="color: #fff;text-decoration: none;;"
-                href="/<%=el.id%>/buy">BUY</a></button>
-              <% if (user.role ==='admin') { %>
-                <button class="delete-btn"><a style="color: #fff;text-decoration: none;;"
-                  href="/editMovie/<%=el.id%>">EDIT</a></button>
-              <% } %>
-          </div>
-
-
+            href="/<%=el.id%>/buy">buy</a></button>
+        </div>
         </div>
       </div>
       <% }) %>

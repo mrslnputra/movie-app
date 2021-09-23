@@ -42,28 +42,24 @@
 
 <body>
   <center>
-    <h3>Add Movie Form</h3>
+    <h3>Regis Form</h3>
   </center>
   <div class="container">
-    <form action="/addMovie" method="POST">
-      <label for="title">Title:</label>
-      <input type="text" name="title">
+    <form action="/registration" method="POST">
+      <label for="fullName">Fullname:</label>
+      <input type="text" name="fullName">
 
-      <label for="duration">Duration:</label>
-      <input type="text" name="duration">
-      
-      <label for="urlImage">URL Image:</label>
-      <input type="text" name="urlImage">
-      <label for="genre">Genre:</label>
-      <select id="genre" name="genre">
-        <option value="" hidden>--Select One--</option>
-        <option value="horror">horror</option>
-        <option value="comedy">comedy</option>
-        <option value="action">action</option>
-        <option value="absurd">absurd</option>
-      </select>
+      <label for="email">Email:</label>
+      <input type="text" name="email">
 
+      <label for="userName">User Name:</label>
+      <input type="text" name="userName">
+      <label for="password">Password:</label>
+      <input type="password" name="password">
       <input type="submit" value="Submit">
+      <center>
+        <p>Already have account? <a href="/login">login</a></p>
+      </center>
     </form>
   </div>
 

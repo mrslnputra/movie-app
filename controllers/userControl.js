@@ -1,14 +1,34 @@
-const { Movie, Profile, Ticket, User } = require('../models/index');
+const { Movie, Profile, Ticket, User } = require('../models/index')
 const { Op } = require('sequelize')
 
-class ControllerUser {
-  static regisProfile(req, res) {
-    res.render('registUser')
+
+class ControlUser {
+  static findAll(req, res) {
+    let condition = {}
+    if (req.query.search) {
+      condition.where = {
+        title: {
+          [Op.iLike]: `%${req.query.search}%`
+        }
+      }
+    }
+
+    Movie.findAll(condition)
+      .then(data => {
+        res.render('base', { data })
+      })
+      .catch(err => {
+        res.send(err)
+      })
   }
 
-  static createProfile(req, res) {
+  static userForm(req, res) {
+    res.render('regisForm')
+  }
+
+
+  static userCreate(req, res) {
     let { fullName, email, userName, password } = req.body
-    let id
     User.create({
       userName: userName,
       password: password
@@ -26,6 +46,35 @@ class ControllerUser {
               UserId: data[0].id
             });
           })
+        res.redirect('/login')
+      })
+      .catch(err => {
+        if (err.name === 'SequelizeValidationError') {
+          let errMessage = err.errors.map(error => error.message)
+          if (!fullName) errMessage.push('Name cannot be empty!')
+          if (!email) errMessage.push('Email cannot be empty!')
+
+          res.send(errMessage)
+        } else {
+          res.send(err)
+        }
+      })
+  }
+
+  static findMovieLogin(req, res) {
+    let user = req.session.user
+    if(user === '')res.redirect('/login')
+    let condition = {}
+    if (req.query.search) {
+      condition.where = {
+        title: {
+          [Op.iLike]: `%${req.query.search}%`
+        }
+      }
+    }
+    Movie.findAll(condition)
+      .then(data => {
+        res.render('home', { data, user })
       })
       .catch(err => {
         res.send(err)
@@ -33,48 +82,52 @@ class ControllerUser {
   }
 
 
-  static findAllMovie(req, res) {
-    Movie.findAll()
+  static addTicket(req, res) {
+    let id = +req.params.movieId
+    res.render('addTicket', { id })
+  }
+
+  static createTicket(req, res) {
+    let movieId = +req.params.movieId
+    Movie.stockSet(movieId)
+    Ticket.create({
+      seatNumber: req.body.seatNumber,
+      MovieId: movieId,
+      UserId: req.session.user.id
+    })
       .then(data => {
-        res.render('home', { data })
+        res.redirect('/home')
+      })
+      .catch(err => {
+        if (err.name === 'SequelizeValidationError') {
+          let errMessage = err.errors.map(error => error.message)
+          res.send(errMessage)
+        } else {
+          res.send(err)
+        }
       })
   }
 
-  static buyTicket(req, res) {
-    let id = +req.params.movieId;
-    res.render('buyTicket', { id })
-  }
-
-  static ticketCreate(req,res){
-    console.log(req.body);
-    
-    console.log(req.session.user);
-    console.log((req.params.movieId));
-    Ticket.create({
-      seatNumber: req.body.seatNumber,
-      MovieId: +req.params.movieId,
-      UserId: req.session.user.id
-    })
-    .then(data=>{
-      res.redirect('/movieList')
-    })
-  }
-
-  static myMovieList(req,res){
-    let id = req.session.user.id
-    console.log(id);
+  static findMyMovie(req, res) {
+    let id = +req.session.user.id
     Ticket.findAll({
-      where:{
-        UserId : id
+      where: {
+        UserId: id
       },
-      include: Movie
+      include: {
+        model: Movie
+      }
     })
-    .then(data=>{
-      console.log(data[0].Movie.title);
-    })
+      .then(data => {
+        res.render('myMovie', { data })
+      })
+      .catch(err => {
+        res.send(err)
+      })
   }
-
 
 }
 
-module.exports = ControllerUser
+
+
+module.exports = ControlUser

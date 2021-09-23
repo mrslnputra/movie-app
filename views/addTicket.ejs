@@ -2,7 +2,6 @@
 <html>
 <style>
   input[type=text],
-  input[type=password],
   select {
     width: 100%;
     padding: 12px 20px;
@@ -42,27 +41,18 @@
 
 <body>
   <center>
-    <h3>Add Movie Form</h3>
+    <h3>Buy Ticket</h3>
   </center>
   <div class="container">
-    <form action="/addMovie" method="POST">
-      <label for="title">Title:</label>
-      <input type="text" name="title">
-
-      <label for="duration">Duration:</label>
-      <input type="text" name="duration">
-      
-      <label for="urlImage">URL Image:</label>
-      <input type="text" name="urlImage">
-      <label for="genre">Genre:</label>
-      <select id="genre" name="genre">
-        <option value="" hidden>--Select One--</option>
-        <option value="horror">horror</option>
-        <option value="comedy">comedy</option>
-        <option value="action">action</option>
-        <option value="absurd">absurd</option>
+    <form action="/<%=id%>/buy" method="POST">
+      <label for="title">Pick your seat</label>
+      <select name="seatNumber" id="">
+        <% for( let i=1; i <=15; i++ ) { %>
+          <option value="<%=i%>">
+            <%=i%>
+          </option>
+          <% } %>
       </select>
-
       <input type="submit" value="Submit">
     </form>
   </div>

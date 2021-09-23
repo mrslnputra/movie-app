@@ -15,18 +15,36 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       User.hasMany(models.Ticket)
       User.hasOne(models.Profile)
+      User.belongsToMany(models.Movie, {
+        through: "Ticket"
+      })
     }
   };
   User.init({
-    userName: DataTypes.STRING,
-    password: DataTypes.STRING,
+    userName: {
+      type:DataTypes.STRING,
+      validate:{
+        notEmpty:{
+          msg: 'Username cannot be empty!'
+        }
+      }
+    },
+    password: {
+      type:DataTypes.STRING,
+      validate:{
+        notEmpty:{
+          msg: 'Password cannot be empty!'
+        }
+      }
+    },
     role: DataTypes.STRING
   }, {
-    hooks:{
-      beforeCreate:(instance,options)=>{
+    hooks: {
+      beforeCreate: (instance, options) => {
         instance.role = 'user'
         const salt = bcrypt.genSaltSync(8)
         const hash = bcrypt.hashSync(instance.password, salt)
+        console.log(hash);
         instance.password = hash
       }
     },
