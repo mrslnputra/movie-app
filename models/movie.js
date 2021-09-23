@@ -11,12 +11,17 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Movie.hasMany(models.Ticket)
+      Movie.hasMany(models.User)
+
     }
   };
   Movie.init({
     title: DataTypes.STRING,
     duration: DataTypes.INTEGER,
-    urlImage: DataTypes.STRING
+    urlImage: DataTypes.STRING,
+    genre: DataTypes.STRING,
+    stock: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Movie',

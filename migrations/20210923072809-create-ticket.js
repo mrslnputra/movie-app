@@ -1,25 +1,33 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-  return queryInterface.createTable('Profiles', {
+  return queryInterface.createTable('Tickets', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      fullName: {
+      seatNumber: {
         type: Sequelize.STRING
       },
-      email: {
-        type: Sequelize.STRING
+      MovieId: {
+        type: Sequelize.INTEGER,
+        references:{
+          model: 'Movies',
+          key: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
       },
       UserId: {
         type: Sequelize.INTEGER,
         references:{
           model: 'Users',
           key: 'id'
-        }
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
       },
       createdAt: {
         allowNull: false,
@@ -32,6 +40,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-  return queryInterface.dropTable('Profiles');
+  return queryInterface.dropTable('Tickets');
   }
 };
