@@ -1,6 +1,5 @@
 const { Movie, Profile, Ticket, User } = require('../models/index');
-const movie = require('../models/movie');
-
+const {Op} = require('sequelize')
 
 class ControllerAdmin {
   static addMovieForm(req, res) {

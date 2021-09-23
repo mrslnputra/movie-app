@@ -1,20 +1,20 @@
 'use strict';
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-  return queryInterface.createTable('Movies', {
+  up: async (queryInterface, Sequelize) => {
+    await queryInterface.createTable('Users', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      title: {
+      userName: {
         type: Sequelize.STRING
       },
-      duration: {
-        type: Sequelize.INTEGER
+      password: {
+        type: Sequelize.STRING
       },
-      urlImage: {
+      role: {
         type: Sequelize.STRING
       },
       createdAt: {
@@ -27,7 +27,9 @@ module.exports = {
       }
     });
   },
-  down: (queryInterface, Sequelize) => {
-  return queryInterface.dropTable('Movies');
+  down: async (queryInterface, Sequelize) => {
+    await queryInterface.dropTable('Users');
   }
 };
+
+
