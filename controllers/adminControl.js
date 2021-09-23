@@ -6,6 +6,7 @@ class ControllerAdmin {
     res.render('addMovie')
   }
   static createMovie(req, res) {
+    // console.log(req.session.user);
     let { title, duration, genre, urlImage } = req.body
     Movie.create({
       title: title,

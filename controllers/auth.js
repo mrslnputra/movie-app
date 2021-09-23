@@ -1,4 +1,4 @@
-const User = require('../models/index').User;
+const {User, Movie} = require('../models/index');
 const bcrypt = require('bcryptjs')
 
 
@@ -8,13 +8,19 @@ class AuthController{
   }
   static postLogin(req,res){
     let {userName, password} = req.body
+    let movie;
+   
+    
     User.findOne({where:{userName}})
     .then(user=>{
       if(user){
         const isValidPass =  bcrypt.compareSync(password, user.password)
         if(isValidPass){
-          req.session.userId = user.id
-          return res.redirect('/movieList');
+          req.session.user = {id: user.id, role: user.role, userName: user.userName}
+          Movie.findAll()
+          .then(data=>{
+            return res.render('movieListLogin', {data: data});
+          })
         }else{
           const err = "invalid username/password"
           return res.redirect(`login/?error=${err}`)

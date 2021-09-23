@@ -27,7 +27,7 @@ class ControllerUser {
             });
           })
       })
-      .catch(err=>{
+      .catch(err => {
         res.send(err)
       })
   }
@@ -36,15 +36,45 @@ class ControllerUser {
   static findAllMovie(req, res) {
     Movie.findAll()
       .then(data => {
-        res.send(data)
+        res.render('home', { data })
       })
   }
 
-  static createTicket(req,res){
+  static buyTicket(req, res) {
+    let id = +req.params.movieId;
+    res.render('buyTicket', { id })
+  }
+
+  static ticketCreate(req,res){
+    console.log(req.body);
+    
+    console.log(req.session.user);
+    console.log((req.params.movieId));
     Ticket.create({
-      
+      seatNumber: req.body.seatNumber,
+      MovieId: +req.params.movieId,
+      UserId: req.session.user.id
+    })
+    .then(data=>{
+      res.redirect('/movieList')
     })
   }
+
+  static myMovieList(req,res){
+    let id = req.session.user.id
+    console.log(id);
+    Ticket.findAll({
+      where:{
+        UserId : id
+      },
+      include: Movie
+    })
+    .then(data=>{
+      console.log(data[0].Movie.title);
+    })
+  }
+
+
 }
 
 module.exports = ControllerUser
