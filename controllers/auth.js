@@ -16,7 +16,7 @@ class AuthController {
             req.session.user = { id: user.id, role: user.role, userName: user.userName }
             Movie.findAll()
               .then(data => {
-                return res.render('home', { data: data });
+                return res.redirect('/home');
               })
           } else {
             const err = "invalid username/password"
@@ -31,7 +31,6 @@ class AuthController {
         console.log(err);
         res.send(err);
       })
-    // let salt = bcrypt.genSaltSync(8)
 
   }
 }

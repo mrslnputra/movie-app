@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Game Collection</title>
+  <title>My Movie</title>
   <style>
     * {
       margin: 0px;
@@ -85,7 +85,10 @@
 
 <body>
   <div class="header">
-    <h1>My Movie</h1>
+    <h1>Now Showing</h1>
+    <div style="display: flex;">
+      <button class="add-btn"><a style="color: #fff;text-decoration: none;" href="/home">Home</a></button>
+    </div>
   </div>
   <div class="content-container">
     <% data.forEach(el=> { %>
@@ -101,8 +104,9 @@
             <%=el.duration%> minutes
           </h4>
           <div style=" text-align: center;">
-            <button class="delete-btn"><a style="color: #fff;text-decoration: none;;" href="/movieList/<%=el.id%>/buy">Buy Ticket</a></button>
-          </div>
+            <button class="delete-btn"><a style="color: #fff;text-decoration: none;;"
+            href="/<%=el.id%>/buy">buy</a></button>
+        </div>
         </div>
       </div>
       <% }) %>

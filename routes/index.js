@@ -1,46 +1,41 @@
 const express = require('express')
-const ControllerAdmin = require('../controllers/adminControl')
 const AuthController = require('../controllers/auth')
-const ControllerUser = require('../controllers/userControl')
+const ControlUser = require('../controllers/userControl')
+const ControllerAdmin = require('../controllers/adminControl')
+
 const router = express.Router()
 
 
 
-router.get('/', ControllerUser.findAllMovie)/* jangan ada tombol buy */
-router.get('/home', ControllerUser.findAllMovie)
-
-
+router.get('/', ControlUser.findAll)/* jangan ada tombol buy */
 // Regis
-router.get('/registration', ControllerUser.regisProfile)
-router.post('/registration', ControllerUser.createProfile)
+router.get('/registration', ControlUser.userForm)
+router.post('/registration', ControlUser.userCreate)
 
 // login
 router.get('/login', AuthController.formLogin)
 router.post('/login', AuthController.postLogin)
 
 
+
 router.use(function (req, res, next) {
-  // console.log(req.session.user);
+  console.log(req.session.user);
   if (!req.session.user) {
-    const err = 'Login first!'
     res.redirect('/login')
   }else{
     next()
   }
 })
 // isLoggedInc
-router.get('/movieList', ControllerUser.findAllMovie)/* boleh ada tombol login */
-///////////////////////////////////////////////////////
-router.get('/movieList/:movieId/buy', ControllerUser.buyTicket)
-router.post('/movieList/:movieId/buy', ControllerUser.ticketCreate)
-router.get('/movieList/myPurchase', ControllerUser.myMovieList)
-//////////////////////////////////////////////////
+router.get('/home', ControlUser.findMovieLogin)/* boleh ada tombol login */
+router.get('/my-purchase', ControlUser.findMyMovie)/* boleh ada tombol login */
+router.get('/:movieId/buy', ControlUser.addTicket)
+router.post('/:movieId/buy', ControlUser.createTicket)
 
 
 
 router.use(function (req, res, next) {
   if (req.session.user.role !== 'admin') {
-    const err = 'balik sana!'
     res.redirect('/login')
   }else{
     next()
@@ -52,5 +47,8 @@ router.post('/addMovie', ControllerAdmin.createMovie)
 router.get('/editMovie/:id', ControllerAdmin.getEditMovie)
 router.post('/editMovie/:id', ControllerAdmin.postEditMovie)
 
-
+router.get('/logout', (req,res)=>{
+  req.session.destroy()
+  res.redirect('/')
+})
 module.exports = router

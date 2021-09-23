@@ -16,7 +16,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Ticket.init({
-    seatNumber: DataTypes.STRING,
+    seatNumber: {
+      type:DataTypes.STRING,
+      validate:{
+        notEmpty:{
+          msg: 'Seat cannot be empty!'
+        }
+      }
+    },
     MovieId: DataTypes.INTEGER,
     UserId: DataTypes.INTEGER
   }, {
